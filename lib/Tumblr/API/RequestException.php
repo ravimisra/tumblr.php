@@ -16,7 +16,11 @@ class RequestException extends \Exception
         if (isset($error->meta)) {
             $errstr = $error->meta->msg;
             if (isset($error->response->errors)) {
-                $errstr .= ' ('.$error->response->errors[0].')';
+                if (!is_string($error->response->errors[0])) {
+                    $errstr .= ' ('.json_decode($error->response->errors[0], true).')';    
+                } else {
+                    $errstr .= ' ('.$error->response->errors[0].')';    
+                }
             }
         } elseif (isset($error->response->errors)) {
             $errstr = $error->response->errors[0];
@@ -33,3 +37,4 @@ class RequestException extends \Exception
     }
 
 }
+

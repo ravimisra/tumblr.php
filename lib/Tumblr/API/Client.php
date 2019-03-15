@@ -223,8 +223,14 @@ class Client
      */
     public function createPost($blogName, $data)
     {
-        $path = $this->blogPath($blogName, '/post');
-
+        $path = $this->blogPath($blogName, '/post');    
+        if (isset($data['npf'])) {
+            $npf = $data['npf'];
+            unset($data['npf']);
+            if ($npf === true) {
+                $path = $this->blogPath($blogName, '/posts');        
+            }
+        }
         return $this->postRequest($path, $data, false);
     }
 
@@ -500,3 +506,4 @@ class Client
     }
 
 }
+
